@@ -1,17 +1,8 @@
 package com.mytech;
 
-import com.mytech.bean.Utility;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.util.Currency;
-
 public class CurrencyConverter {
 
     public static void main(String[] args) {
-//        String[] country_code={"AUD","CAD","CNY","CZK","DKK","EUR","GBP","JPY", "NOK","NZD","USD"};
-
         System.out.println(convertCurrency(args));
     }
     public static String convertCurrency(String[] args){
@@ -24,7 +15,7 @@ public class CurrencyConverter {
                 String term = args[3].toUpperCase();
                 output.setLength(0);
                 output.append(Utility.converter(base,term,amount));
-            }catch (NullPointerException nullPntrExce){
+            }catch (NullPointerException nullPntrExcp){
                 output.setLength(0);
                 output.append("Input values are mismatch, Provide input as eg : AUD 100.00 in USD");
             }catch (NumberFormatException numbrFrmtExc){

@@ -26,6 +26,14 @@ class CurrencyConverterTest {
         String result = CurrencyConverter.convertCurrency(args);
         assertEquals("Provide correct amount to convert. eg : AUD 100.00 in USD",result);
     }
+
+    @Test
+    void convertCurrencyInvalidTest() {
+        String[] args = {"AAA","50","IN","DDD"};
+        String result = CurrencyConverter.convertCurrency(args);
+        assertEquals("Unable to find rate for AAA/DDD",result);
+    }
+
     @Test
     void convertCurrencyAUDDKKTest() {
         String[] args = {"AUD","100.00","in","DKK"};

@@ -1,15 +1,14 @@
-package com.mytech.bean;
+package com.mytech;
 
 import java.text.DecimalFormat;
 import java.util.*;
 
 public class Utility {
     public static final Map<String,Double> currencyPair = new HashMap<>();
+    public static String[] countryCode={"AUD","CAD","CNY","CZK","DKK","EUR","GBP","JPY", "NOK","NZD","USD"};
 
    static double updatedRate=1;
     private static void currencyMap(){
-
-
         currencyPair.put("AUDUSD",0.8371);
         currencyPair.put("USDCNY",6.1715);
         currencyPair.put("EURUSD",1.2315);
@@ -21,7 +20,7 @@ public class Utility {
         currencyPair.put("EURNOK",8.6651);
 
     }
-    static int count =0;
+
     private static double getCurrencyRate(String to, String from)throws Exception{
         currencyMap();
         double crossCurrencyRate =1;
@@ -32,15 +31,11 @@ public class Utility {
         if(currencyPair.containsKey(to.concat(from))){
             currencyName.append(to.concat(from));
             exchangeRate = currencyPair.get(currencyName.toString());
-            count--;
 
         }else if(currencyPair.containsKey(from.concat(to))){
             currencyName.append(from.concat(to));
-            boolean isInverted = true;
             exchangeRate = 1/currencyPair.get(currencyName.toString());
-            count--;
         }else{
-            count++;
             String term = getCurrencyCode(to,from);
             exchangeRate = getCurrencyRate(to,term) * getCurrencyRate(term,from);
         }
@@ -54,29 +49,24 @@ public class Utility {
         if(!base.equals(term)){
             exchangeRate = getCurrencyRate(base,term);
         }
-
         if(exchangeRate>=0){
-
             convertedAmount = exchangeRate * amount;
-
         }
-
         return convertedAmount;
     }
 
     public static String converter(String base, String term,double amount)throws Exception{
-       double convertedAmount = crossConverter(base,term,amount);
-       StringBuilder sb = new StringBuilder();
-        if(convertedAmount>=0){
-
-           sb.append(convertedResult(base,term,amount,convertedAmount));
+        StringBuilder result = new StringBuilder();
+        if(Arrays.asList(countryCode).contains(base) && Arrays.asList(countryCode).contains(term)) {
+            double convertedAmount = crossConverter(base, term, amount);
+            result.append(convertedResult(base, term, amount, convertedAmount));
         }
         else
         {
-            sb.append("Unable to find rate for ").append(base).append("/").append(term);
+            result.append("Unable to find rate for ").append(base).append("/").append(term);
         }
 
-       return sb.toString();
+       return result.toString();
     }
 
     private static String convertedResult(String base,String term,double amount,double convertedAmount)throws Exception{
